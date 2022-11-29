@@ -134,4 +134,7 @@ class SiteController extends Controller
     public function actionSay($message = 'Привет'){
         return $this->render('say',['message'=>$message]);
     }
+    public function actionTest($message = 'Test'){
+        return $this->render('test',['message'=>$message]);
+    }
 }
