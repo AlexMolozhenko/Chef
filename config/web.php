@@ -42,14 +42,17 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
+
+        /**
+         * устанавливает ЧПУ url
+         */
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+
     ],
     'params' => $params,
 ];

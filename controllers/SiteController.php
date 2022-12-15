@@ -2,14 +2,15 @@
 
 namespace app\controllers;
 
-use app\models\EntryForm;
+
+use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\SignupForm;
 
 class SiteController extends Controller
 {
@@ -99,52 +100,26 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
 
-            return $this->refresh();
+    public function actionSignup(){
+        $model = new SignupForm();
+
+        if($model->load(Yii::$app->request->post())){
+            if($user = $model->signup()){
+                if(Yii::$app->getUser()->login($user)){
+                    return $this->goHome();
+                }
+            }
         }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
+        return $this->render('signup',['model'=>$model]);
+
     }
 
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
 
-    /**
-     *  Say message
-     * @param string $message
-     * @return string
-     */
-    public function actionSay($message = 'Привет'){
-        return $this->render('say',['message'=>$message]);
-    }
-    public function actionTest($message = 'Test'){
-        return $this->render('test',['message'=>$message]);
-    }
 
-    public function actionEntry(){
-        $model = new EntryForm();
-        if($model->load(Yii::$app->request->post())&& $model->validate()){
-            return $this->render('entry-confirm',['model'=>$model]);
-        }else{
-            return $this->render('entry',['model'=>$model]);
-        }
-    }
+
+
+
+
+
 }
